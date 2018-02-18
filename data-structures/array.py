@@ -17,7 +17,7 @@ class Array:
         self.value = value
     #-##
 
-    ##- Delete. O(1) (sort of: garbage collection).
+    ##- Delete. O(1).
     def delete(self):
         self.value = None
     #-##

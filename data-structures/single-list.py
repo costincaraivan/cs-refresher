@@ -29,7 +29,7 @@ class SinglyLinkedList:
         self.head = None
     #-##
 
-    ##- Delete. O(1) (sort of: garbage collection).
+    ##- Delete. O(n) (sort of: garbage collection).
     def delete(self):
         self.head = None
     #-##
