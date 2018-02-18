@@ -40,6 +40,17 @@ class SinglyLinkedList:
         self.head = tempNode
     #-##
 
+    ##- Set at start. O(1).
+    def set_start(self, element):
+        self.head.value = element
+    #-##
+
+    ##- Insert at arbitrary position. O(n).
+    def insert_position(self, position, element):
+        tempNode = SinglyLinkedListNode(element, self.head)
+        self.head = tempNode
+    #-##
+
     ##- Utility methods.
     def __str__(self):
         if(self.head == None):
@@ -85,9 +96,10 @@ class TestSinglyLinkedList(unittest.TestCase):
 
     def setUp(self):
         self.sut = SinglyLinkedList()
+        # Since we're inserting from the start, the values are reversed.
+        # So the actual list is [ 1, 2, 3 ].
         for i in range(3, 0, -1):
-            tempNode = SinglyLinkedListNode(i, self.sut.head)
-            self.sut.head = tempNode
+            self.sut.insert_start(i)
 
     def test_create(self):
         self.assertTrue(hasattr(self, "sut"))
@@ -99,11 +111,21 @@ class TestSinglyLinkedList(unittest.TestCase):
         self.assertEqual(sut.head, None)
 
     def test_insert_start(self):
+        # Make an expected list of [ 0, 1, 2, 3 ].
         expectedList = SinglyLinkedList()
         for i in range(3, -1, -1):
-            tempNode = SinglyLinkedListNode(i, expectedList.head)
-            expectedList.head = tempNode
+            expectedList.insert_start(i)
         self.sut.insert_start(0)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_set_start(self):
+        # Make an expected list of [ 0, 2, 3 ].
+        expectedList = SinglyLinkedList()
+        for i in range(3, 1, -1):
+            expectedList.insert_start(i)
+        expectedList.insert_start(0)
+
+        self.sut.set_start(0)
         self.assertEqual(self.sut, expectedList)
 #-##
 
