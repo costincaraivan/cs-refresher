@@ -47,8 +47,20 @@ class SinglyLinkedList:
 
     ##- Insert at arbitrary position. O(n).
     def insert_position(self, position, element):
-        tempNode = SinglyLinkedListNode(element, self.head)
-        self.head = tempNode
+        if(self.head == None):
+            self.insert_start(element)
+            return
+
+        tempNode = SinglyLinkedListNode(element, None)
+
+        current = self.head
+        count = 0
+        while((current.nextNode != None) and (count < position):
+            count += 1
+            current = current.nextNode
+
+        tempNode.nextNode = current.nextNode
+        current.nextNode = tempNode
     #-##
 
     ##- Utility methods.
@@ -126,6 +138,17 @@ class TestSinglyLinkedList(unittest.TestCase):
         expectedList.insert_start(0)
 
         self.sut.set_start(0)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_insert_position(self):
+        expectedList = SinglyLinkedList()
+        for i in range(5, 2, -1):
+            expectedList.insert_start(i)
+        expectedList.insert_start(6)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        self.sut.insert_position(6, 3)
         self.assertEqual(self.sut, expectedList)
 #-##
 
