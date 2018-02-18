@@ -47,6 +47,87 @@ class DoublyLinkedList:
         self.head.value = element
     #-##
 
+    ##- Insert at arbitrary position. O(n).
+    def insert_position(self, position, element):
+        if(self.head == None):
+            self.insert_start(element)
+            return
+
+        tempNode = DoublyLinkedListNode(element, None, None)
+
+        current = self.head
+        count = 0
+        while((current.nextNode != None) and (count < position)):
+            count += 1
+            current = current.nextNode
+
+        tempNode.nextNode = current.nextNode
+        tempNode.previousNode = current.previousNode
+        current.nextNode.previousNode = tempNode
+        current.nextNode = tempNode
+    #-##
+
+    ##- Set at arbitrary position. O(n).
+    def set_position(self, position, element):
+        if(self.head == None):
+            return
+
+        current = self.head
+        count = 0
+        while((current.nextNode != None) and (count < position)):
+            count += 1
+            current = current.nextNode
+        current.value = element
+    #-##
+
+    ##- Insert at end. O(n).
+    def insert_end(self, element):
+        if(self.head == None):
+            self.insert_start(element)
+            return
+
+        tempNode = DoublyLinkedListNode(element, None, None)
+
+        current = self.head
+        count = 0
+        while(current.nextNode != None):
+            count += 1
+            current = current.nextNode
+
+        tempNode.previousNode = current
+        current.nextNode = tempNode
+    #-##
+
+    ##- Set at end. O(n).
+    def set_end(self, element):
+        if(self.head == None):
+            return
+
+        current = self.head
+        count = 0
+        while(current.nextNode != None):
+            count += 1
+            current = current.nextNode
+
+        current.value = element
+    #-##
+
+    ##- Join. O(n).
+    def join(self, other):
+        if(self.head == None):
+            self.insert_start(other)
+            return
+
+        current = self.head
+        count = 0
+        while(current.nextNode != None):
+            count += 1
+            current = current.nextNode
+
+        other.head.previousNode = current
+        current.nextNode = other.head
+    #-##
+
     ##- Utility methods.
     def __str__(self):
         if(self.head == None):
@@ -85,7 +166,6 @@ class DoublyLinkedList:
     #-##
 #-##
 
-
 ##- TestDoublyLinkedList class.
 class TestDoublyLinkedList(unittest.TestCase):
 
@@ -123,6 +203,59 @@ class TestDoublyLinkedList(unittest.TestCase):
         expectedList.insert_start(0)
 
         self.sut.set_start(0)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_insert_position(self):
+        expectedList = DoublyLinkedList()
+        expectedList.insert_start(3)
+        expectedList.insert_start(6)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        self.sut.insert_position(1, 6)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_set_position(self):
+        expectedList = DoublyLinkedList()
+        expectedList.insert_start(6)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        self.sut.set_position(2, 6)
+
+    def test_insert_end(self):
+        expectedList = DoublyLinkedList()
+        expectedList.insert_start(6)
+        expectedList.insert_start(3)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        self.sut.insert_end(6)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_set_end(self):
+        expectedList = DoublyLinkedList()
+        expectedList.insert_start(6)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        self.sut.set_end(6)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_join(self):
+        expectedList = DoublyLinkedList()
+        expectedList.insert_start(5)
+        expectedList.insert_start(4)
+        expectedList.insert_start(3)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        otherList = DoublyLinkedList()
+        otherList.insert_start(5)
+        otherList.insert_start(4)
+
+        self.sut.join(otherList)
+        self.assertEqual(self.sut, expectedList)
         self.assertEqual(self.sut, expectedList)
 #-##
 

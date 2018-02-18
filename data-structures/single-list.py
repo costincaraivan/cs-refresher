@@ -98,8 +98,6 @@ class SinglyLinkedList:
         if(self.head == None):
             return
 
-        tempNode = SinglyLinkedListNode(element, None)
-
         current = self.head
         count = 0
         while(current.nextNode != None):
