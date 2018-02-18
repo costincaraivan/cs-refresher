@@ -6,14 +6,14 @@ import logging
 
 logging.basicConfig(level = logging.INFO)
 
-##- StackNode class.
-class StackNode:
+##- QueueNode class.
+class QueueNode:
     value = None
-    nextNode = None
+    previousNode = None
 
-    def __init__(self, value, nextNode):
+    def __init__(self, value, previousNode):
         self.value = value
-        self.nextNode = nextNode
+        self.previousNode = previousNode
 
     def __str__(self):
         return str(self.value)
@@ -23,59 +23,55 @@ class StackNode:
             and self.value == other.value
 #-##
 
-##- Stack class.
+##- Queue class.
 # Search method not included, has its own category.
-class Stack:
+class Queue:
 
     ##- Create. O(1).
     def __init__(self):
-        self.top = None
+        self.tail = None
+        self.head = None
     #-##
 
     ##- Delete. O(n) (sort of: garbage collection).
     def delete(self):
-        self.top = None
+        self.tail = None
+        self.head = None
     #-##
 
-    ##- Push. O(1).
-    def push(self, element):
-        tempNode = StackNode(element, self.top)
-        self.top = tempNode
+    ##- Enqueue. O(1).
+    def enqueue(self, element):
+        if(self.head == None):
+            tempNode = QueueNode(element, None)
+            self.head = tempNode
+            self.tail = tempNode
+        else:
+            tempNode = QueueNode(element, None)
+            self.tail.previousNode = tempNode
+            self.tail = tempNode
     #-##
 
-    ##- Pop. O(1).
-    def pop(self):
-        if(self.top == None):
+    ##- Dequeue. O(1).
+    def dequeue(self):
+        if(self.head == None):
             return
 
-        value = self.top.value
-
-        if(self.top.nextNode == None):
-            self.top = None
-        else:
-            self.top = self.top.nextNode
+        value = self.head.value
+        self.head = self.head.previousNode
 
         return value
-    #-##
-
-    ##- Peek. O(1).
-    def peek(self):
-        if(self.top == None):
-            return
-
-        return self.top.value
     #-##
 
     ##- Size. O(n).
     def size(self):
         size = 0
-        if(self.top == None):
+        if(self.head == None):
             return size
 
         size = 1
-        current = self.top.nextNode
+        current = self.head.previousNode
         while(current != None):
-            current = current.nextNode
+            current = current.previousNode
             size += 1
 
         return size
@@ -83,14 +79,14 @@ class Stack:
 
     ##- Utility methods.
     def __str__(self):
-        if(self.top == None):
+        if(self.head == None):
             return ""
 
-        stackString = str(self.top)
-        current = self.top.nextNode
+        stackString = str(self.head)
+        current = self.head.previousNode
         while(current != None):
             stackString += ", {}".format(str(current))
-            current = current.nextNode
+            current = current.previousNode
 
         return stackString
 
@@ -98,16 +94,16 @@ class Stack:
         if(not isinstance(other, self.__class__)):
             return False
 
-        currentSelf = self.top
-        currentOther = other.top
+        currentSelf = self.head
+        currentOther = other.head
 
         while(currentSelf != None):
             if(currentOther != None):
                 # Different nodes.
                 if(currentSelf.value != currentOther.value):
                     return False
-                currentSelf = currentSelf.nextNode
-                currentOther = currentOther.nextNode
+                currentSelf = currentSelf.previousNode
+                currentOther = currentOther.previousNode
             # We ran out of nodes in the other list.
             elif(currentOther == None):
                 return False
@@ -119,56 +115,50 @@ class Stack:
     #-##
 #-##
 
-##- TestStack class.
-class TestStack(unittest.TestCase):
+##- TestQueue class.
+class TestQueue(unittest.TestCase):
 
     sut = None
 
     def setUp(self):
-        self.sut = Stack()
+        self.sut = Queue()
         # Since we're inserting from the start, the values are reversed.
         # So the actual list is [ 1, 2, 3 ].
-        for i in range(3, 0, -1):
-            self.sut.push(i)
+        for i in range(1, 4, 1):
+            self.sut.enqueue(i)
 
     def test_create(self):
         self.assertTrue(hasattr(self, "sut"))
 
     def test_delete(self):
-        sut = Stack()
-        sut.top = True
+        sut = Queue()
+        sut.head = True
 
         sut.delete()
-        self.assertEqual(sut.top, None)
+        self.assertEqual(sut.head, None)
 
-    def test_push(self):
+    def test_enqueue(self):
         # Make an expected stack of [ 0, 1, 2, 3 ].
-        expectedStack = Stack()
-        for i in range(3, -1, -1):
-            expectedStack.push(i)
+        expectedQueue = Queue()
+        for i in range(1, 5, 1):
+            expectedQueue.enqueue(i)
 
-        self.sut.push(0)
-        self.assertEqual(self.sut, expectedStack)
+        self.sut.enqueue(4)
+        self.assertEqual(self.sut, expectedQueue)
 
-    def test_pop(self):
+    def test_dequeue(self):
         # Make an expected stack of [ 2, 3 ].
-        expectedStack = Stack()
-        expectedStack.push(3)
-        expectedStack.push(2)
+        expectedQueue = Queue()
+        expectedQueue.enqueue(2)
+        expectedQueue.enqueue(3)
 
-        value = self.sut.pop()
-
-        self.assertEqual(value, 1)
-        self.assertEqual(self.sut, expectedStack)
-
-    def test_peek(self):
-        value = self.sut.peek()
+        value = self.sut.dequeue()
 
         self.assertEqual(value, 1)
+        self.assertEqual(self.sut, expectedQueue)
 
     def test_size(self):
         size = self.sut.size()
-
         self.assertEqual(size, 3)
 #-##
 

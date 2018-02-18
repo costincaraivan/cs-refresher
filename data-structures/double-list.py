@@ -1,3 +1,6 @@
+# Completely silly exercises, in real life use:
+# Python lists: https://docs.python.org/3/tutorial/datastructures.html
+
 import unittest
 import logging
 

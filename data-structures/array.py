@@ -1,3 +1,7 @@
+# Completely silly exercises, in real life use:
+# Python lists: https://docs.python.org/3/tutorial/datastructures.html
+# NumPy arrays: https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html
+
 import unittest
 import logging
 
