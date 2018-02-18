@@ -21,7 +21,7 @@ class SinglyLinkedListNode:
 #-##
 
 ##- SinglyLinkedList class.
-# Search method not be included, has its own category.
+# Search method not included, has its own category.
 class SinglyLinkedList:
 
     ##- Create. O(1).
@@ -55,12 +55,73 @@ class SinglyLinkedList:
 
         current = self.head
         count = 0
-        while((current.nextNode != None) and (count < position):
+        while((current.nextNode != None) and (count < position)):
             count += 1
             current = current.nextNode
 
         tempNode.nextNode = current.nextNode
         current.nextNode = tempNode
+    #-##
+
+    ##- Set at arbitrary position. O(n).
+    def set_position(self, position, element):
+        if(self.head == None):
+            return
+
+        current = self.head
+        count = 0
+        while((current.nextNode != None) and (count < position)):
+            count += 1
+            current = current.nextNode
+        current.value = element
+    #-##
+
+    ##- Insert at end. O(n).
+    def insert_end(self, element):
+        if(self.head == None):
+            self.insert_start(element)
+            return
+
+        tempNode = SinglyLinkedListNode(element, None)
+
+        current = self.head
+        count = 0
+        while(current.nextNode != None):
+            count += 1
+            current = current.nextNode
+
+        current.nextNode = tempNode
+    #-##
+
+    ##- Set at end. O(n).
+    def set_end(self, element):
+        if(self.head == None):
+            return
+
+        tempNode = SinglyLinkedListNode(element, None)
+
+        current = self.head
+        count = 0
+        while(current.nextNode != None):
+            count += 1
+            current = current.nextNode
+
+        current.value = element
+    #-##
+
+    ##- Join. O(n).
+    def join(self, other):
+        if(self.head == None):
+            self.insert_start(other)
+            return
+
+        current = self.head
+        count = 0
+        while(current.nextNode != None):
+            count += 1
+            current = current.nextNode
+
+        current.nextNode = other.head
     #-##
 
     ##- Utility methods.
@@ -142,13 +203,55 @@ class TestSinglyLinkedList(unittest.TestCase):
 
     def test_insert_position(self):
         expectedList = SinglyLinkedList()
-        for i in range(5, 2, -1):
-            expectedList.insert_start(i)
+        expectedList.insert_start(3)
         expectedList.insert_start(6)
         expectedList.insert_start(2)
         expectedList.insert_start(1)
 
-        self.sut.insert_position(6, 3)
+        self.sut.insert_position(1, 6)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_set_position(self):
+        expectedList = SinglyLinkedList()
+        expectedList.insert_start(6)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        self.sut.set_position(2, 6)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_insert_end(self):
+        expectedList = SinglyLinkedList()
+        expectedList.insert_start(6)
+        expectedList.insert_start(3)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        self.sut.insert_end(6)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_set_end(self):
+        expectedList = SinglyLinkedList()
+        expectedList.insert_start(6)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        self.sut.set_end(6)
+        self.assertEqual(self.sut, expectedList)
+
+    def test_join(self):
+        expectedList = SinglyLinkedList()
+        expectedList.insert_start(5)
+        expectedList.insert_start(4)
+        expectedList.insert_start(3)
+        expectedList.insert_start(2)
+        expectedList.insert_start(1)
+
+        otherList = SinglyLinkedList()
+        otherList.insert_start(5)
+        otherList.insert_start(4)
+
+        self.sut.join(otherList)
         self.assertEqual(self.sut, expectedList)
 #-##
 

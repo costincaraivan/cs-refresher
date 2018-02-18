@@ -8,7 +8,7 @@ logging.basicConfig(level = logging.INFO)
 # Some of these operations don't really make sense on Python "arrays" are actually
 # a more complex data structure based on lists. Still, will go through the steps
 # just as "practice".
-# Search method not be included, has its own category.
+# Search method not included, has its own category.
 class Array:
     value = None
 
