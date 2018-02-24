@@ -99,5 +99,7 @@ ENV/
 
 # mypy
 .mypy_cache/
-data-structures/.vscode/launch.json
-data-structures/.vscode/launch.json
+
+# Visual Studio Code.
+.vscode/
+.vscode/
