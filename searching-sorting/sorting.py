@@ -39,6 +39,59 @@ def selection_sort(my_list):
         my_list[slot], my_list[max_position] = my_list[max_position], my_list[slot]
 #endregion
 
+#region Shell sort. Best: O(n log(n)), average: O(n^3/2), worst: O(n^3/2). Space: 1. Not stable.
+def shell_sort(my_list):
+    sublist_count = len(my_list) // 2
+    while sublist_count > 0:
+        for start_position in range(sublist_count):
+            gap_insertion_sort(my_list, start_position, sublist_count)
+        sublist_count = sublist_count // 2
+
+def gap_insertion_sort(my_list, start, gap):
+    for index in range(start + gap, len(my_list), gap):
+        current_value = my_list[index]
+        position = index
+
+        while position >= gap and my_list[position - gap] > current_value:
+            my_list[position] = my_list[position - gap]
+            position = position - gap
+        
+        my_list[position] = current_value
+#endregion
+
+#region Merge sort. Best: O(n log(n)), average: O(n log(n)), worst: O(n log(n)). Space: O(n). Stable.
+def merge_sort(my_list):
+    if len(my_list) > 1:
+        mid = len(my_list) // 2
+        left_list = my_list[:mid]
+        right_list = my_list[mid:]
+
+        merge_sort(left_list)
+        merge_sort(right_list)
+
+        left_index = 0
+        right_index = 0
+        merged_index = 0
+        while left_index < len(left_list) and right_index < len(right_list):
+            if left_list[left_index] < right_list[right_index]:
+                my_list[merged_index] = left_list[left_index]
+                left_index = left_index + 1
+            else:
+                my_list[merged_index] = right_list[right_index]
+                right_index = right_index + 1
+            merged_index = merged_index + 1
+        
+        while left_index < len(left_list):
+            my_list[merged_index] =  left_list[left_index]
+            left_index = left_index + 1
+            merged_index = merged_index + 1
+
+        while right_index < len(right_list):
+            my_list[merged_index] =  right_list[right_index]
+            right_index = right_index + 1
+            merged_index = merged_index + 1
+#endregion
+
 #region TestSort class.
 class TestSort(unittest.TestCase):
     sut = None
@@ -118,6 +171,56 @@ class TestSort(unittest.TestCase):
         self.sut = [ 3, 1, 2, 2 ]
         expected_list = [ 1, 2, 2, 3 ]
         selection_sort(self.sut)
+        self.assertEqual(self.sut, expected_list)
+    #endregion
+
+    #region Shell sort tests.
+    def test_shell_sort_empty(self):
+        expected_list = []
+        shell_sort(self.sut)     
+        self.assertEqual(self.sut, expected_list)
+
+    def test_shell_sort_sorted(self):
+        self.sut = [ 1, 2, 3 ]
+        expected_list = [ 1, 2, 3 ]
+        shell_sort(self.sut)
+        self.assertEqual(self.sut, expected_list)
+
+    def test_shell_sort_unsorted(self):
+        self.sut = [ 3, 1, 2 ]
+        expected_list = [ 1, 2, 3 ]
+        shell_sort(self.sut)
+        self.assertEqual(self.sut, expected_list)
+
+    def test_shell_sort_duplicates(self):
+        self.sut = [ 3, 1, 2, 2 ]
+        expected_list = [ 1, 2, 2, 3 ]
+        shell_sort(self.sut)
+        self.assertEqual(self.sut, expected_list)
+    #endregion
+
+    #region Merge sort tests.
+    def test_merge_sort_empty(self):
+        expected_list = []
+        merge_sort(self.sut)     
+        self.assertEqual(self.sut, expected_list)
+
+    def test_merge_sort_sorted(self):
+        self.sut = [ 1, 2, 3 ]
+        expected_list = [ 1, 2, 3 ]
+        merge_sort(self.sut)
+        self.assertEqual(self.sut, expected_list)
+
+    def test_merge_sort_unsorted(self):
+        self.sut = [ 3, 1, 2 ]
+        expected_list = [ 1, 2, 3 ]
+        merge_sort(self.sut)
+        self.assertEqual(self.sut, expected_list)
+
+    def test_merge_sort_duplicates(self):
+        self.sut = [ 3, 1, 2, 2 ]
+        expected_list = [ 1, 2, 2, 3 ]
+        merge_sort(self.sut)
         self.assertEqual(self.sut, expected_list)
     #endregion
 #endregion
