@@ -92,6 +92,42 @@ def merge_sort(my_list):
             merged_index = merged_index + 1
 #endregion
 
+#region Quick sort. Best: O(n log(n)), average: O(n log(n)), worst: O(n^2). Space: worst: O(n), average: O(log(n)). Not stable.
+def quick_sort(my_list):
+    if my_list == None or my_list == []:
+        return
+    quick_sort_helper(my_list, 0, len(my_list) - 1)
+
+
+def quick_sort_helper(my_list, first, last):
+    if(first < last):
+        split_point = partition(my_list, first, last)
+        quick_sort_helper(my_list, first, split_point - 1)
+        quick_sort_helper(my_list, split_point + 1, last)
+
+def partition(my_list, first, last):
+    pivot_value = my_list[first]
+
+    left_marker = first + 1
+    right_marker = last
+
+    done = False
+    while not done:
+        while left_marker <= right_marker and my_list[left_marker] < pivot_value:
+            left_marker = left_marker + 1
+        while right_marker >= left_marker and my_list[right_marker] >= pivot_value:
+            right_marker = right_marker - 1
+
+        if right_marker < left_marker:
+            done = True
+        else:
+            my_list[left_marker], my_list[right_marker] = my_list[right_marker], my_list[left_marker]
+
+    my_list[first], my_list[right_marker] = my_list[right_marker], my_list[first]
+
+    return right_marker
+#endregion
+
 #region TestSort class.
 class TestSort(unittest.TestCase):
     sut = None
@@ -221,6 +257,31 @@ class TestSort(unittest.TestCase):
         self.sut = [ 3, 1, 2, 2 ]
         expected_list = [ 1, 2, 2, 3 ]
         merge_sort(self.sut)
+        self.assertEqual(self.sut, expected_list)
+    #endregion
+
+    #region Quick sort tests.
+    def test_quick_sort_empty(self):
+        expected_list = []
+        quick_sort(self.sut)     
+        self.assertEqual(self.sut, expected_list)
+
+    def test_quick_sort_sorted(self):
+        self.sut = [ 1, 2, 3 ]
+        expected_list = [ 1, 2, 3 ]
+        quick_sort(self.sut)
+        self.assertEqual(self.sut, expected_list)
+
+    def test_quick_sort_unsorted(self):
+        self.sut = [ 3, 1, 2 ]
+        expected_list = [ 1, 2, 3 ]
+        quick_sort(self.sut)
+        self.assertEqual(self.sut, expected_list)
+
+    def test_quick_sort_duplicates(self):
+        self.sut = [ 3, 1, 2, 2 ]
+        expected_list = [ 1, 2, 2, 3 ]
+        quick_sort(self.sut)
         self.assertEqual(self.sut, expected_list)
     #endregion
 #endregion
