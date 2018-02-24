@@ -38,30 +38,58 @@ class BinaryTree:
             tempNode.rightNode = self.rightNode
             self.rightNode = tempNode
 
+    def preorder_traverse(self, callback):
+        if(self == None):
+            return
+        callback(self.value)
+        self.leftNode.traverse()
+        self.rightNode.traverse()
+
+    def inorder_traverse(self, callback):
+        if(self == None):
+            return
+        self.leftNode.traverse()
+        callback(self.value)
+        self.rightNode.traverse()
+
+    def postorder_traverse(self, callback):
+        if(self == None):
+            return        
+        self.leftNode.traverse()
+        self.rightNode.traverse()
+        callback(self.value)
+
     ##- Utility methods.
     def __str__(self):
-        if(self != None):
-            stackString = ""
-            stackString = str(self.value)
-            logging.debug(self.value)
-            if(self.leftNode != None):
-                stackString += ", {}".format(self.leftNode.__str__())
-            if(self.rightNode != None):
-                stackString += ", {}".format(self.rightNode.__str__())
+        if(self == None):
+            return ""
+        stackString = str(self.value)
+        logging.debug(self.value)
+        if(self.leftNode != None):
+            stackString += ", {}".format(self.leftNode.__str__())
+        if(self.rightNode != None):
+            stackString += ", {}".format(self.rightNode.__str__())
         return stackString
   
     def __eq__(self, other):
+        if not self and not other:
+            return True
+
         if(not isinstance(other, self.__class__)):
-            return False
+            return False        
 
-        currentSelf = self.value
-        currentOther = other.value
-
-        if((currentSelf != None) and (currentOther != None)):
-            # Different value nodes.
-            if(currentSelf.value != currentOther.value):
+        if self and other:
+            if(self.value != other.value):            
                 return False
-        return True
+            if self.leftNode:
+                if not self.leftNode.__eq__(other.leftNode):
+                    return False
+            if self.rightNode:
+                if not self.rightNode.__eq__(other.rightNode):
+                    return False
+            return True
+
+        return False
     #-##
 #-##
 
@@ -82,10 +110,15 @@ class TestBinaryTree(unittest.TestCase):
         sut.delete()
         self.assertEqual(sut.top, None)
 
-    def test_insert(self):
+    def test_insert_left(self):
         self.sut.insertLeft(2)
         self.sut.insertLeft(3)
-        logging.info((self.sut))
+
+        expectedTree = BinaryTree(1)
+        expectedTree.leftNode = BinaryTree(3)
+        expectedTree.leftNode.leftNode = BinaryTree(2)
+        
+        self.assertEqual(self.sut, expectedTree)
 
 #-##
 
