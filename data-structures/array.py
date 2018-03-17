@@ -7,6 +7,7 @@ import logging
 
 logging.basicConfig(level = logging.INFO)
 
+
 ##- Array class.
 # Will only simulate C-like array behavior.
 # Some of these operations don't really make sense on Python "arrays" are actually
@@ -17,7 +18,7 @@ class Array:
     value = None
 
     ##- Create. O(1).
-    def __init__(self, value = []):
+    def __init__(self, value=[]):
         self.value = value
     #-##
 
@@ -41,7 +42,6 @@ class Array:
 
     ##- Insert at arbitrary position. O(1).
     def insert_position(self, position, element):
-        arrayLength = len(self.value)
         self.value = self.value[:position + 1] + [ element ] \
             + self.value[position + 1:]
     #-##
@@ -82,6 +82,7 @@ class Array:
         return self
     #-##
 #-##
+
 
 ##- TestArray class.
 class TestArray(unittest.TestCase):
