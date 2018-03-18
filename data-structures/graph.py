@@ -56,24 +56,44 @@ class Graph:
 
     # Breadth first traversal.
     def bft(self):
-        visited = [ False for x in self.node_list ]
+        visited = [ False ] * len(self.node_list)
         queue = []
+        path = []
 
-        visited[0] = True
         queue.append(self.node_list[0])
+        visited[0] = True
 
-        while len(queue) != 0:
-            current_node = queue.pop()
-            logging.info(current_node)
+        while queue:
+            current_node = queue.pop(0)
+
+            path.append(current_node)
 
             for connected_node in current_node.get_connections():
                 if(not visited[connected_node.get_id()]):
-                    visited[connected_node.get_id()] = True
                     queue.append(connected_node)
+                    visited[connected_node.get_id()] = True
+
+        return path
 
     # Depth first traversal.
     def dft(self):
-        pass
+        stack = []
+        path = []
+
+        stack.append(self.node_list[0])
+
+        while stack:
+            current_node = stack.pop()
+
+            if current_node in path:
+                continue
+
+            path.append(current_node)
+
+            for neighbor in current_node.get_connections():
+                stack.append(self.node_list[neighbor.get_id()])
+
+        return path
 
     def __contains__(self, node):
         return node in self.node_list
@@ -99,7 +119,10 @@ class GraphTests(unittest.TestCase):
         self.sut.add_edge(4, 5, 1)
 
     def test_bft(self):
-        self.sut.bft()
+        logging.info("path: {}".format(str([ x.get_id() for x in self.sut.bft() ])))
+
+    def test_dft(self):
+        logging.info("path: {}".format(str([ x.get_id() for x in self.sut.dft() ])))
 
 if __name__ == "__main__":
     unittest.main(verbosity = 2)
