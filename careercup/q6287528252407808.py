@@ -16,6 +16,7 @@ import logging
 
 logging.basicConfig(level = logging.INFO)
 
+
 # TODO: Not solved yet, moving on to other problems for now.
 def k_palindrome(input_string, k):
     mid_point = len(input_string) // 2
