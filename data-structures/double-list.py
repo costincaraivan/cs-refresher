@@ -4,9 +4,10 @@
 import unittest
 import logging
 
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
-##- DoublyLinkedListNode class.
+
+# - DoublyLinkedListNode class.
 class DoublyLinkedListNode:
     value = None
     previousNode = None
@@ -25,34 +26,36 @@ class DoublyLinkedListNode:
             and self.value == other.value
 #-##
 
-##- DoublyLinkedList class.
+# - DoublyLinkedList class.
 # Search method not included, has its own category.
+
+
 class DoublyLinkedList:
 
-    ##- Create. O(1).
+    # - Create. O(1).
     def __init__(self):
         self.head = None
     #-##
 
-    ##- Delete. O(n) (sort of: garbage collection).
+    # - Delete. O(n) (sort of: garbage collection).
     def delete(self):
         self.head = None
     #-##
 
-    ##- Insert at start. O(1).
+    # - Insert at start. O(1).
     def insert_start(self, element):
         tempNode = DoublyLinkedListNode(element, None, self.head)
         self.head = tempNode
     #-##
 
-    ##- Set at start. O(1).
+    # - Set at start. O(1).
     def set_start(self, element):
         self.head.value = element
     #-##
 
-    ##- Insert at arbitrary position. O(n).
+    # - Insert at arbitrary position. O(n).
     def insert_position(self, position, element):
-        if(self.head == None):
+        if(self.head is None):
             self.insert_start(element)
             return
 
@@ -60,7 +63,7 @@ class DoublyLinkedList:
 
         current = self.head
         count = 0
-        while((current.nextNode != None) and (count < position)):
+        while((current.nextNode is not None) and (count < position)):
             count += 1
             current = current.nextNode
 
@@ -70,22 +73,22 @@ class DoublyLinkedList:
         current.nextNode = tempNode
     #-##
 
-    ##- Set at arbitrary position. O(n).
+    # - Set at arbitrary position. O(n).
     def set_position(self, position, element):
-        if(self.head == None):
+        if(self.head is None):
             return
 
         current = self.head
         count = 0
-        while((current.nextNode != None) and (count < position)):
+        while((current.nextNode is not None) and (count < position)):
             count += 1
             current = current.nextNode
         current.value = element
     #-##
 
-    ##- Insert at end. O(n).
+    # - Insert at end. O(n).
     def insert_end(self, element):
-        if(self.head == None):
+        if(self.head is None):
             self.insert_start(element)
             return
 
@@ -93,7 +96,7 @@ class DoublyLinkedList:
 
         current = self.head
         count = 0
-        while(current.nextNode != None):
+        while(current.nextNode is not None):
             count += 1
             current = current.nextNode
 
@@ -101,29 +104,29 @@ class DoublyLinkedList:
         current.nextNode = tempNode
     #-##
 
-    ##- Set at end. O(n).
+    # - Set at end. O(n).
     def set_end(self, element):
-        if(self.head == None):
+        if(self.head is None):
             return
 
         current = self.head
         count = 0
-        while(current.nextNode != None):
+        while(current.nextNode is None):
             count += 1
             current = current.nextNode
 
         current.value = element
     #-##
 
-    ##- Join. O(n).
+    # - Join. O(n).
     def join(self, other):
-        if(self.head == None):
+        if(self.head is None):
             self.insert_start(other)
             return
 
         current = self.head
         count = 0
-        while(current.nextNode != None):
+        while(current.nextNode is not None):
             count += 1
             current = current.nextNode
 
@@ -131,14 +134,14 @@ class DoublyLinkedList:
         current.nextNode = other.head
     #-##
 
-    ##- Utility methods.
+    # - Utility methods.
     def __str__(self):
-        if(self.head == None):
+        if(self.head is None):
             return ""
 
         listString = str(self.head)
         current = self.head.nextNode
-        while(current != None):
+        while(current is not None):
             listString += ", {}".format(str(current))
             current = current.nextNode
 
@@ -151,25 +154,27 @@ class DoublyLinkedList:
         currentSelf = self.head
         currentOther = other.head
 
-        while(currentSelf != None):
-            if(currentOther != None):
+        while(currentSelf is not None):
+            if(currentOther is not None):
                 # Different nodes.
                 if(currentSelf.value != currentOther.value):
                     return False
                 currentSelf = currentSelf.nextNode
                 currentOther = currentOther.nextNode
             # We ran out of nodes in the other list.
-            elif(currentOther == None):
+            elif(currentOther is None):
                 return False
         # We ran out of nodes in the self list.
-        if(currentOther != None):
+        if(currentOther is not None):
             return False
         # Full comparison, everything the same.
         return True
     #-##
 #-##
 
-##- TestDoublyLinkedList class.
+# - TestDoublyLinkedList class.
+
+
 class TestDoublyLinkedList(unittest.TestCase):
 
     sut = None
@@ -262,5 +267,6 @@ class TestDoublyLinkedList(unittest.TestCase):
         self.assertEqual(self.sut, expectedList)
 #-##
 
+
 if __name__ == "__main__":
-    unittest.main(verbosity = 2)
+    unittest.main(verbosity=2)
