@@ -17,21 +17,21 @@ def memoize(function):
 
 
 @memoize
-def edit_distance_recursive(string1, string2):
-    if string1 == "":
-        return len(string2)
-    if string2 == "":
-        return len(string1)
+def edit_distance_recursive(source, target):
+    if source == "":
+        return len(target)
+    if target == "":
+        return len(source)
 
-    if string1[-1] == string2[-1]:
+    if source[-1] == target[-1]:
         cost = 0
     else:
         cost = 1
 
     return min(
-        edit_distance_recursive(string1[:-1], string2) + 1,
-        edit_distance_recursive(string1, string2[:-1]) + 1,
-        edit_distance_recursive(string1[:-1], string2[:-1]) + cost
+        edit_distance_recursive(source[:-1], target) + 1,
+        edit_distance_recursive(source, target[:-1]) + 1,
+        edit_distance_recursive(source[:-1], target[:-1]) + cost
     )
 
 
@@ -40,9 +40,9 @@ logging.info(edit_distance_recursive("jackrabbits", "jackhammer"))
 logging.info(edit_distance_recursive("ie", "e"))
 
 
-def edit_distance_iterative(string1, string2):
-    rows = len(string1)
-    columns = len(string2)
+def edit_distance_iterative(source, target):
+    rows = len(source)
+    columns = len(target)
     if rows == 0:
         return columns
     if columns == 0:
@@ -58,7 +58,7 @@ def edit_distance_iterative(string1, string2):
 
     for column in range(1, columns):
         for row in range(1, rows):
-            if string1[row - 1] == string2[column - 1]:
+            if source[row - 1] == target[column - 1]:
                 cost = 0
             else:
                 cost = 1
